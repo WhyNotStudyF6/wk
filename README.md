@@ -23,22 +23,22 @@ PINGMU_KUAN, PINGMU_GAO = huoqu_pingmu_chicun()
 # ==============================
 
 def chuangjian_chuangkou(
-    chuangkou_mingcheng="我的窗口",        # 窗口首次出现位置，x y为窗口左上角坐标，屏幕左上角为原点。
-    x_weizhi=100,      
-    y_weizhi=100,             
-    moshi="百分比窗口大小",   # 设置窗口大小的模式："自定义窗口大小" 或 "百分比窗口大小"
-    kuan=800,                 
-    gao=600,                  
-    baifenbi=0.5              
+    chuangkou_mingcheng="我的窗口",         # 窗口名称
+    x_weizhi=100,                          # 窗口首次出现位置，以屏幕左上角为原点，x_weizhi、y_weizhi分别为窗口左上角横坐标、纵坐标。
+    y_weizhi=100,                          
+    moshi="百分比窗口大小",                 # 设置窗口大小的模式："自定义窗口大小" 或 "百分比窗口大小"
+    kuan=800,                              # 自定义窗口大小模式下，窗口宽度
+    gao=600,                               # 自定义窗口大小模式下，窗口高度
+    baifenbi=0.5                           # 百分比窗口大小模式下，窗口大小占屏幕大小的百分比
 ):
     """
-    创建基础窗口（支持中文模式名）
+    创建基础窗口
 
-    - 模式为 "自定义窗口大小"：使用指定宽高
+    - 模式为 "自定义窗口大小"：窗口大小=kuan*gao
     - 模式为 "百分比窗口大小"：窗口大小 = 屏幕大小 * 百分比
     """
     win = tk.Tk()
-    win.title(biaoti)
+    win.title(chuangkou_mingcheng)
 
     if moshi == "百分比窗口大小":
         kuan = int(PINGMU_KUAN * baifenbi)
@@ -60,7 +60,7 @@ if __name__ == "__main__":
     y = (PINGMU_GAO - gao) // 2
 
     win = chuangjian_chuangkou(
-        biaoti="示例窗口（中文模式）",
+        chuangkou_mingcheng="我的窗口",
         x_weizhi=x,
         y_weizhi=y,
         moshi="百分比窗口大小",
