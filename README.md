@@ -1,70 +1,109 @@
-# wk
-wk的库
+# chuangjian
 
-import tkinter as tk
+一个中文友好的 Tkinter 简易窗口与控件库，适合初学者和中文用户快速开发桌面 GUI 程序。
 
-# ==============================
-# 获取屏幕信息
-# ==============================
+## 安装
 
-def huoqu_pingmu_chicun():
-    """获取屏幕尺寸"""
-    chuangkou = tk.Tk()
-    chuangkou.withdraw()
-    kuan = chuangkou.winfo_screenwidth()
-    gao = chuangkou.winfo_screenheight()
-    chuangkou.destroy()
-    return kuan, gao
+将 `chuangjian` 文件夹放入你的项目目录即可。
 
-PINGMU_KUAN, PINGMU_GAO = huoqu_pingmu_chicun()
+## 使用方法
 
-# ==============================
-# 创建基础窗口函数
-# ==============================
+### 1. 获取屏幕分辨率
+```python
+from chuangjian import huoqu_pingmu_fenbianlv
 
-def chuangjian_chuangkou(
-    chuangkou_mingcheng="我的窗口",         # 窗口名称
-    x_weizhi=100,                          # 窗口首次出现位置，以屏幕左上角为原点，x_weizhi、y_weizhi分别为窗口左上角横坐标、纵坐标。
-    y_weizhi=100,                          
-    moshi="百分比窗口大小",                 # 设置窗口大小的模式："自定义窗口大小" 或 "百分比窗口大小"
-    kuan=800,                              # 自定义窗口大小模式下，窗口宽度
-    gao=600,                               # 自定义窗口大小模式下，窗口高度
-    baifenbi=0.5                           # 百分比窗口大小模式下，窗口大小占屏幕大小的百分比
-):
-    """
-    创建基础窗口
+huoqu_pingmu_fenbianlv()  # 直接显示本机屏幕分辨率
+```
 
-    - 模式为 "自定义窗口大小"：窗口大小=kuan*gao
-    - 模式为 "百分比窗口大小"：窗口大小 = 屏幕大小 * 百分比
-    """
-    win = tk.Tk()
-    win.title(chuangkou_mingcheng)
+### 2. 创建基础窗口
+```python
+from chuangjian.chuangjian_chuangkou import chuangjian_chuangkou
 
-    if moshi == "百分比窗口大小":
-        kuan = int(PINGMU_KUAN * baifenbi)
-        gao = int(PINGMU_GAO * baifenbi)
+# 默认参数创建窗口（占屏幕50%，位置在100,100）
+win = chuangjian_chuangkou()
 
-    win.geometry(f"{kuan}x{gao}+{x_weizhi}+{y_weizhi}")
-    return win
+# 自定义窗口
+win = chuangjian_chuangkou(
+    chuangkou_mingcheng="我的程序",    # 窗口标题
+    x_weizhi=200,                      # 窗口左上角x坐标
+    y_weizhi=150,                      # 窗口左上角y坐标
+    moshi="自定义窗口大小",            # 可选："自定义窗口大小" 或 "百分比窗口大小"
+    kuan=1024,                         # 窗口宽度
+    gao=768,                           # 窗口高度
+    baifenbi=0.7                       # 百分比模式时占屏幕比例
+)
+```
 
-# ==============================
-# 示例用法（直接运行此模块时执行）
-# ==============================
+### 3. 添加按钮
+```python
+from chuangjian import chuangjian_anni
 
-if __name__ == "__main__":
-    # 示例：创建一个窗口，占屏幕60%，居中显示
-    baifenbi = 0.6
-    kuan = int(PINGMU_KUAN * baifenbi)
-    gao = int(PINGMU_GAO * baifenbi)
-    x = (PINGMU_KUAN - kuan) // 2
-    y = (PINGMU_GAO - gao) // 2
+# 创建简单按钮
+chuangjian_anni(win, wenzi="点我", x=50, y=50)
 
-    win = chuangjian_chuangkou(
-        chuangkou_mingcheng="我的窗口",
-        x_weizhi=x,
-        y_weizhi=y,
-        moshi="百分比窗口大小",
-        baifenbi=baifenbi
-    )
+# 创建带功能的按钮
+def dianji_anni():
+    print("按钮被点击了！")
 
-    win.mainloop()
+chuangjian_anni(win, wenzi="点我", mingling=dianji_anni, x=50, y=100)
+```
+
+### 4. 添加标签
+```python
+from chuangjian import chuangjian_biaoqian
+
+chuangjian_biaoqian(win, wenzi="这是一个标签", x=50, y=150)
+```
+
+### 5. 添加输入框
+```python
+from chuangjian import chuangjian_shurukuang
+
+shurukuang = chuangjian_shurukuang(win, x=50, y=200, kuan=20)  # kuan为输入框宽度
+```
+
+### 6. 显示消息弹窗
+```python
+from chuangjian import xianshi_xiaoxi
+
+xianshi_xiaoxi(wenzi="这是一条消息", biaoti="提示")
+```
+
+## 完整示例
+
+```python
+from chuangjian import (
+    chuangjian_chuangkou,
+    huoqu_pingmu_fenbianlv,
+    chuangjian_anni,
+    chuangjian_biaoqian,
+    chuangjian_shurukuang,
+    xianshi_xiaoxi
+)
+
+# 显示本机屏幕分辨率
+huoqu_pingmu_fenbianlv()  # 输出类似：本机屏幕分辨率：1920 x 1080
+
+# 创建一个窗口
+win = chuangjian_chuangkou()
+
+# 在窗口中添加控件
+chuangjian_biaoqian(win, wenzi="欢迎使用", x=50, y=30)
+chuangjian_anni(win, wenzi="点我", mingling=lambda: xianshi_xiaoxi("你点击了按钮！"), x=50, y=70)
+chuangjian_shurukuang(win, x=50, y=110)
+
+# 显示窗口
+win.mainloop()
+```
+
+## 主要模块
+
+- chuangjian_chuangkou.py  基础窗口与屏幕分辨率
+- chuangjian_anni.py       按钮控件
+- chuangjian_biaoqian.py   标签控件
+- chuangjian_shurukuang.py 输入框控件
+- chuangjian_xiaoxikuang.py 消息弹窗
+
+## 许可证
+
+MIT 
