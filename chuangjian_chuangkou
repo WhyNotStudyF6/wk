@@ -1,0 +1,207 @@
+import tkinter as tk
+import random
+import screeninfo
+
+def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangkou_daxiao="默认", chuangkou_zhiding=False, chuangkou_lashen="不拉伸"):
+    """
+    🏗️ 创建一个高度可定制的Tkinter窗口
+    
+    📌 参数说明:
+    ----------------------------
+    chuangkou_mingcheng: str
+        🏷️ 窗口标题 - 显示在窗口顶部的名称
+        🌐 范围: 任意字符串，建议长度不超过50个字符
+        🌟 示例: "我的应用", "数据分析工具" 等
+        
+    chuangkou_weizhi: str
+        📍 窗口位置 - 支持以下格式:
+        🎯 坐标形式: "数字*数字" 如 "300*200"
+        📊 百分比形式: "百分比*百分比" 如 "50%*30%"
+        🔢 单百分比: "百分比" 如 "50%" (相当于"50%*50%")
+        🔑 关键词形式: 
+            "默认"→居中 | "左上" | "右上" | "左下" | "右下" 
+            "居中" | "上中" | "下中" | "左中" | "右中"
+            "偏左上" | "偏右上" | "偏左下" | "偏右下"
+            "随机"→随机位置
+        ⚠️ 注意: 
+        - 数字坐标范围: 0 ≤ x ≤ 屏幕宽度, 0 ≤ y ≤ 屏幕高度
+        - 百分比范围: 1% ~ 100%
+        
+    chuangkou_daxiao: str
+        📏 窗口大小 - 支持以下格式:
+        📐 尺寸形式: "数字*数字" 如 "800*600"
+        📈 百分比形式: "百分比*百分比" 如 "80%*60%"
+        🔢 单百分比: "百分比" 如 "70%" (相当于"70%*70%")
+        🔑 关键词形式:
+            "默认"→居中半屏 | "最大化"→全屏
+            "左半屏" | "右半屏" | "上半屏" | "下半屏"
+            "居中半屏"→宽高各半屏
+        ⚠️ 注意:
+        - 最小尺寸限制: 100*100像素
+        - 百分比范围: 10% ~ 100%
+        
+    chuangkou_zhiding: bool
+        📌 窗口置顶 - 是否保持在最上层
+        ✅ True: 置顶 | ❌ False: 不置顶
+        🔄 运行时可通过window.attributes('-topmost', True/False)动态修改
+        
+    chuangkou_lashen: str
+        🏋️ 窗口拉伸方式:
+        "不拉伸"→固定大小 | "任意拉伸"→自由调整
+        "按比例拉伸"→保持宽高比调整
+        ⚠️ 注意: 
+        - 选择"按比例拉伸"时，窗口初始大小决定宽高比
+        - "最大化"窗口时建议选择"不拉伸"
+        
+    🎁 返回值: tk.Tk 窗口对象
+    """
+    
+    # 获取屏幕尺寸 🖥️
+    try:
+        screen = screeninfo.get_monitors()[0]
+        screen_width = screen.width
+        screen_height = screen.height
+    except:
+        # 备用方案：使用Tkinter获取屏幕尺寸
+        root = tk.Tk()
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        root.destroy()
+    
+    # 创建窗口 🏗️
+    window = tk.Tk()
+    window.title(f"{chuangkou_mingcheng}")
+    
+    # 处理窗口位置 📍
+    def chuli_weizhi(weizhi):
+        # 处理关键词位置
+        weizhi_dict = {
+            "默认": (screen_width//2, screen_height//2),
+            "左上": (0, 0),
+            "右上": (screen_width, 0),
+            "左下": (0, screen_height),
+            "右下": (screen_width, screen_height),
+            "居中": (screen_width//2, screen_height//2),
+            "上中": (screen_width//2, 0),
+            "下中": (screen_width//2, screen_height),
+            "左中": (0, screen_height//2),
+            "右中": (screen_width, screen_height//2),
+            "偏左上": (screen_width//4, screen_height//4),
+            "偏右上": (screen_width*3//4, screen_height//4),
+            "偏左下": (screen_width//4, screen_height*3//4),
+            "偏右下": (screen_width*3//4, screen_height*3//4),
+            "随机": (random.randint(0, screen_width), random.randint(0, screen_height))
+        }
+        
+        if weizhi in weizhi_dict:
+            left, top = weizhi_dict[weizhi]
+            return f"+{left}+{top}"
+        
+        # 处理数字*数字 或 百分比*百分比 或 单百分比
+        if '*' in weizhi:
+            parts = weizhi.split('*')
+            left_part = parts[0].strip()
+            top_part = parts[1].strip()
+        else:
+            left_part = top_part = weizhi.strip()
+        
+        # 处理百分比
+        if '%' in left_part:
+            left_percent = max(1, min(100, int(left_part.replace('%', '').strip() or 50))
+            left = int(screen_width * left_percent / 100)
+        else:
+            left = max(0, min(screen_width, int(left_part or screen_width//2))
+        
+        if '%' in top_part:
+            top_percent = max(1, min(100, int(top_part.replace('%', '').strip() or 50))
+            top = int(screen_height * top_percent / 100)
+        else:
+            top = max(0, min(screen_height, int(top_part or screen_height//2))
+            
+        return f"+{left}+{top}"
+    
+    # 处理窗口大小 📏
+    def chuli_daxiao(daxiao):
+        # 处理关键词大小
+        daxiao_dict = {
+            "默认": (screen_width//2, screen_height//2),
+            "最大化": (screen_width, screen_height),
+            "左半屏": (screen_width//2, screen_height),
+            "右半屏": (screen_width//2, screen_height),
+            "上半屏": (screen_width, screen_height//2),
+            "下半屏": (screen_width, screen_height//2),
+            "居中半屏": (screen_width//2, screen_height//2)
+        }
+        
+        if daxiao in daxiao_dict:
+            width, height = daxiao_dict[daxiao]
+            return f"{width}x{height}"
+        
+        # 处理数字*数字 或 百分比*百分比 或 单百分比
+        if '*' in daxiao:
+            parts = daxiao.split('*')
+            width_part = parts[0].strip()
+            height_part = parts[1].strip()
+        else:
+            width_part = height_part = daxiao.strip()
+        
+        # 处理百分比
+        if '%' in width_part:
+            width_percent = max(10, min(100, int(width_part.replace('%', '').strip() or 50))
+            width = int(screen_width * width_percent / 100)
+        else:
+            width = max(100, min(screen_width, int(width_part or screen_width//2))
+        
+        if '%' in height_part:
+            height_percent = max(10, min(100, int(height_part.replace('%', '').strip() or 50))
+            height = int(screen_height * height_percent / 100)
+        else:
+            height = max(100, min(screen_height, int(height_part or screen_height//2))
+            
+        return f"{width}x{height}"
+    
+    # 设置窗口几何属性 ✨
+    try:
+        window.geometry(f"{chuli_daxiao(chuangkou_daxiao)}{chuli_weizhi(chuangkou_weizhi)}")
+    except Exception as e:
+        print(f"⚠️ 窗口设置错误: {e}, 使用默认设置")
+        window.geometry(f"{screen_width//2}x{screen_height//2}+{screen_width//4}+{screen_height//4}")
+    
+    # 设置窗口置顶 📌
+    if chuangkou_zhiding:
+        window.attributes('-topmost', True)
+    
+    # 设置窗口拉伸方式 🏋️
+    if chuangkou_lashen == "不拉伸":
+        window.resizable(False, False)
+    elif chuangkou_lashen == "按比例拉伸":
+        # 保持宽高比 🔄
+        try:
+            # 获取初始宽高
+            geom = window.geometry()
+            width, height = map(int, geom.split('+')[0].split('x'))
+            aspect_ratio = width / height
+            
+            def enforce_aspect_ratio(event):
+                if event.widget != window:
+                    return
+                    
+                # 计算新尺寸保持宽高比
+                new_width = event.width
+                new_height = int(new_width / aspect_ratio)
+                
+                # 确保最小尺寸
+                if new_width < 100 or new_height < 100:
+                    return
+                    
+                # 应用新尺寸
+                window.geometry(f"{new_width}x{new_height}")
+            
+            window.bind("<Configure>", enforce_aspect_ratio)
+        except Exception as e:
+            print(f"⚠️ 按比例拉伸设置失败: {e}, 使用默认拉伸方式")
+            window.resizable(True, True)
+    else:  # "任意拉伸"
+        window.resizable(True, True)
+    
+    return window
