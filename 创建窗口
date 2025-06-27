@@ -149,6 +149,8 @@ def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangk
         aspect_ratio = width / height
         
         def enforce_aspect_ratio(event):
+            if event.widget != window:
+                return
             new_width = event.width
             new_height = int(new_width / aspect_ratio)
             window.geometry(f"{new_width}x{new_height}")
