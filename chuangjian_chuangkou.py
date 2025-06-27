@@ -14,7 +14,7 @@ def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangk
         🌟 示例: "我的应用", "数据分析工具" 等
         
     chuangkou_weizhi: str
-        📍 窗口位置 - 支持以下格式:
+        📍 （首次打开窗口时）窗口位置 - 支持以下格式:
         🎯 坐标形式: "数字*数字" 如 "300*200"
         📊 百分比形式: "百分比*百分比" 如 "50%*30%"
         🔢 单百分比: "百分比" 如 "50%" (相当于"50%*50%")
@@ -51,7 +51,7 @@ def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangk
         "按比例拉伸"→保持宽高比调整
         ⚠️ 注意: 
         - 选择"按比例拉伸"时，窗口初始大小决定宽高比
-        - "最大化"窗口时建议选择"不拉伸"
+        - "最大化"窗口时窗口大小建议不选择“任意拉伸”
         
     🎁 返回值: tk.Tk 窗口对象
     """
