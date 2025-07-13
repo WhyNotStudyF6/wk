@@ -107,16 +107,16 @@ def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangk
         
         # 处理百分比
         if '%' in left_part:
-            left_percent = max(1, min(100, int(left_part.replace('%', '').strip() or 50))
+            left_percent = max(1, min(100, int(left_part.replace('%', '').strip() or 50)))
             left = int(screen_width * left_percent / 100)
         else:
-            left = max(0, min(screen_width, int(left_part or screen_width//2))
+            left = max(0, min(screen_width, int(left_part or screen_width//2)))
         
         if '%' in top_part:
-            top_percent = max(1, min(100, int(top_part.replace('%', '').strip() or 50))
+            top_percent = max(1, min(100, int(top_part.replace('%', '').strip() or 50)))
             top = int(screen_height * top_percent / 100)
         else:
-            top = max(0, min(screen_height, int(top_part or screen_height//2))
+            top = max(0, min(screen_height, int(top_part or screen_height//2)))
             
         return f"+{left}+{top}"
     
@@ -147,16 +147,16 @@ def chuangjian_chuangkou(chuangkou_mingcheng, chuangkou_weizhi="默认", chuangk
         
         # 处理百分比
         if '%' in width_part:
-            width_percent = max(10, min(100, int(width_part.replace('%', '').strip() or 50))
+            width_percent = max(10, min(100, int(width_part.replace('%', '').strip() or 50)))
             width = int(screen_width * width_percent / 100)
         else:
-            width = max(100, min(screen_width, int(width_part or screen_width//2))
+            width = max(100, min(screen_width, int(width_part or screen_width//2)))
         
         if '%' in height_part:
-            height_percent = max(10, min(100, int(height_part.replace('%', '').strip() or 50))
+            height_percent = max(10, min(100, int(height_part.replace('%', '').strip() or 50)))
             height = int(screen_height * height_percent / 100)
         else:
-            height = max(100, min(screen_height, int(height_part or screen_height//2))
+            height = max(100, min(screen_height, int(height_part or screen_height//2)))
             
         return f"{width}x{height}"
     
